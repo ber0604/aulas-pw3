@@ -32,11 +32,16 @@ Route::get('/itens', function () {
 
 Route::get('/itens{id}', function ($id) {
     print "Você está acessando o registro com id = {$id}";
-   
-});
+})->where('id', '[0-9]+');
+
 
 Route::get('/bem-vindo{nome}', function ($nome) {
     print "Seja bem vindo, {$nome}";
+   
+});
+
+Route::get('/bem-vindo/{nome}/{sobrenome?}', function ($nome, $sobrenome = "") {
+    print "Seja bem vindo, {$nome} {$sobrenome}";
    
 });
 
