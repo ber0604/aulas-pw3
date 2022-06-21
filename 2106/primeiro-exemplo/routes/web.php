@@ -40,6 +40,11 @@ Route::get('/bem-vindo{nome}', function ($nome) {
    
 });
 
+Route::get('/bem-vindo/{nome}/{sobrenome?}', function ($nome, $sobrenome = "") {
+    print "Seja bem vindo, {$nome} {$sobrenome}";
+   
+});
+
 Route::POST('/itens', function () {
     print "Post itens";
 });
