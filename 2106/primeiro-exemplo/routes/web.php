@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PessoaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,3 +48,6 @@ Route::get('/bem-vindo/{nome}/{sobrenome?}', function ($nome, $sobrenome = "") {
 Route::POST('/itens', function () {
     print "Post itens";
 });
+
+Route::get('/pessoas', [PessoaController::class,'index']);
+Route::get('/pessoas/{id}', [PessoaController::class,'show'])->where('id','[0-9]+');
