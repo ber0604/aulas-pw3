@@ -14,11 +14,14 @@ class PessoaController extends Controller
 
     function index()
     {
-        print "<ul>";
-        foreach ($this->pessoas as $pessoa) {
-            print "<li> {$pessoa['nome']} {$pessoa['sobrenome']}</li>";
-        }
-        print "</ul>";
+        return view('pessoas.index' , [
+            'pessoas'=> $this->pessoas
+        ]);
+        // print "<ul>";
+        // foreach ($this->pessoas as $pessoa) {
+        //     print "<li> {$pessoa['nome']} {$pessoa['sobrenome']}</li>";
+        // }
+        // print "</ul>";
     }
 
     function show($id)

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PessoaController;
+use App\Http\Controllers\LivrosController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,17 +14,6 @@ use App\Http\Controllers\PessoaController;
 |
 */
 
-Route::get('/', function () {
-    print "<!DOCTYPE html>
-    <html>
-    <head>
-        <title>Primeira página</title>
-    </head>
-    <body>
-        <h1>Títulos</h1>
-    </body>
-    </html>";
-});
 
 Route::get('/itens', function () {
     print "GET itens";
@@ -50,4 +40,9 @@ Route::POST('/itens', function () {
 });
 
 Route::get('/pessoas', [PessoaController::class,'index']);
+
 Route::get('/pessoas/{id}', [PessoaController::class,'show'])->where('id','[0-9]+');
+
+Route::get('/livros', [LivrosController::class,'index']);
+
+Route::get('/livros/{id}', [LivrosController::class,'show'])->where('id','[0-9]+');
