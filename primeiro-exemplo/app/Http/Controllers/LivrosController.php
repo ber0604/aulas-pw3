@@ -18,6 +18,15 @@ class LivrosController extends Controller
         ]);
     }
 
+    function create(){
+        return view('livros/create');
+    }
+
+    function store (Request $request){
+        $data = $request->all();
+        return redirect('/livros');
+    }
+
     function show($id)
     {
         $p = [];

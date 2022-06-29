@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\LivrosController;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,12 +28,12 @@ Route::get('/itens{id}', function ($id) {
 
 Route::get('/bem-vindo{nome}', function ($nome) {
     print "Seja bem vindo, {$nome}";
-   
+
 });
 
 Route::get('/bem-vindo/{nome}/{sobrenome?}', function ($nome, $sobrenome = "") {
     print "Seja bem vindo, {$nome} {$sobrenome}";
-   
+
 });
 
 Route::POST('/itens', function () {
@@ -46,3 +47,12 @@ Route::get('/pessoas/{id}', [PessoaController::class,'show'])->where('id','[0-9]
 Route::get('/livros', [LivrosController::class,'index']);
 
 Route::get('/livros/{id}', [LivrosController::class,'show'])->where('id','[0-9]+');
+
+Route::get('/pessoas/create', [PessoaController::class, 'create']);
+
+route::post('/pessoas/store' , [PessoaController::class, 'store']);
+
+Route::get('/livros/create', [LivrosController::class, 'create']);
+
+route::post('/livros/store' , [LivrosController::class, 'store']);
+

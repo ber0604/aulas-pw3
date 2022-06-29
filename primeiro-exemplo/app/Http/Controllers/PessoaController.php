@@ -24,6 +24,15 @@ class PessoaController extends Controller
         // print "</ul>";
     }
 
+    function create(){
+        return view('pessoas/create');
+    }
+
+    function store (Request $request){
+        $data = $request->all();
+        return redirect('/pessoas');
+    }
+
     function show($id)
     {
         $p = [];
