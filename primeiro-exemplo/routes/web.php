@@ -40,13 +40,7 @@ Route::POST('/itens', function () {
     print "Post itens";
 });
 
-Route::get('/pessoas', [PessoaController::class,'index']);
 
-Route::get('/pessoas/{id}', [PessoaController::class,'show'])->where('id','[0-9]+');
-
-Route::get('/livros', [LivrosController::class,'index']);
-
-Route::get('/livros/{id}', [LivrosController::class,'show'])->where('id','[0-9]+');
 
 Route::get('/pessoas/create', [PessoaController::class, 'create']);
 

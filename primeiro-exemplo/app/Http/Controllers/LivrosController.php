@@ -1,20 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
 class LivrosController extends Controller
 {
-    var $livros = [
-        ['id' => 1, 'titulo' => 'Dom Casmurro', 'autor' => 'Machado de Assis'],
-        ['id' => 1, 'titulo' => 'Os Sertões', 'autor' => 'Euclides da Cunha']
-    ];
+    // var $livros = [
+    //     ['id' => 1, 'titulo' => 'Dom Casmurro', 'autor' => 'Machado de Assis'],
+    //     ['id' => 1, 'titulo' => 'Os Sertões', 'autor' => 'Euclides da Cunha']
+    // ];
 
     function index()
     {
-        return view('livros.index', [
-            'livros' => $this->livros
+        $livros = DB::select('select * from livros;');
+
+        return view('livros.index' , [
+            'livros'=> $livros
         ]);
     }
 
@@ -24,6 +27,12 @@ class LivrosController extends Controller
 
     function store (Request $request){
         $data = $request->all();
+
+        DB::table('livros')->insert([
+            'titulo' =>$data['titulo'],
+            'autor' =>$data['autor'],
+        ]);
+
         return redirect('/livros');
     }
 
