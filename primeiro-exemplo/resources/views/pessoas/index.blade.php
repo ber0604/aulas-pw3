@@ -1,14 +1,18 @@
-<a href ="/pessoas/create">Nova Pessoa</a>
-
+<a href="/pessoas/create">Nova pessoa</a>
 @if (count($pessoas) == 0)
-nenhuma Pessoa
-@elseif(count($pessoas) == 1)
-Apenas uma Pessoa
+    Nenhuma pessoa
+@elseif (count($pessoas) == 1)
+    Apenas uma pessoa
 @else
-Total de Pessoas: {{count($pessoas)}}
-<ul>
+    Total de Pessoas: {{ count($pessoas)}}
+    <ul>
     @foreach($pessoas as $pessoa)
-    <li>{{$pessoa->nome}}$nbsp; {{$pessoa->sobrenome}} </li>
+        <li>
+            {{$pessoa->nome}}&nbsp;{{$pessoa->sobrenome}}
+            <a href="/pessoas/{{$pessoa->id}}/edit">Editar</a>
+            <a href="/pessoas/{{$pessoa->id}}/show">Ver</a>
+            <a href="/pessoas/{{$pessoa->id}}/destroy">Remover</a>
+        </li>
     @endforeach
-</ul>
+    </ul>
 @endif

@@ -6,11 +6,14 @@
 @else
     total de livros = {{ count($livros) }}
     <ul>
-        @foreach ($livros as $livro)
-            {{ $livro->titulo }}&nbsp;{{ $livro->sobrenome }}
-            <button>ALTERAR</button>
-            <button>VER</button>
-            <button>Remover</button>
-        @endforeach
-    </ul>
+
+    @foreach($livros as $livro)
+    <li>
+        {{$livro->titulo}}&nbsp;{{$livro->autor}}
+        <a href="/livros/{{$livro->id}}/edit">Editar</a>
+        <a href="/livros/{{$livro->id}}/show">Ver</a>
+        <a href="/livros/{{$livro->id}}/destroy">Remover</a>
+    </li>
+@endforeach
+</ul>
 @endif

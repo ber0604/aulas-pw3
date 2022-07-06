@@ -1,58 +1,86 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
 class LivrosController extends Controller
 {
-    // var $livros = [
-    //     ['id' => 1, 'titulo' => 'Dom Casmurro', 'autor' => 'Machado de Assis'],
-    //     ['id' => 1, 'titulo' => 'Os Sertões', 'autor' => 'Euclides da Cunha']
-    // ];
-
     function index()
     {
         $livros = DB::select('select * from livros;');
 
-        return view('livros.index' , [
-            'livros'=> $livros
+        return view('livros.index', [
+            'livros' => $livros
         ]);
     }
 
-    function create(){
-        return view('livros/create');
+    function create()
+    {
+        return view('livros.create');
     }
 
-    function store (Request $request){
+    function store(Request $request)
+    {
         $data = $request->all();
 
-        DB::table('livros')->insert([
-            'titulo' =>$data['titulo'],
-            'autor' =>$data['autor'],
-        ]);
+        unset($data['_token']);
+        DB::insert(
+            "
+        INSERT INTO livros(titulo, autor) VALUES (:titulo, :autor);",
+            $data
+        );
+
+        return redirect('/livros');
+    }
+
+    function edit($id)
+    {
+        $livros = DB::select(
+            "
+            SELECT * FROM livros WHERE id = ?",
+            [$id]
+        );
+
+        return view('livros.edit', ['livro' => $livros[0]]);
+    }
+
+    function update(Request $request)
+    {
+        // Retorna vetor associativo
+        $data = $request->all();
+        // Remover o índice _token
+        unset($data['_token']);
+
+        DB::update("
+            UPDATE livros
+            SET
+                titulo = :titulo,
+               autor = :autor
+            WHERE
+                id = :id
+        ", $data);
 
         return redirect('/livros');
     }
 
     function show($id)
     {
-        $p = [];
+        $livros = DB::select(
+            "
+            SELECT * FROM livros WHERE id = :id",
+            ['id' => $id]
+        );
 
-        $p = array_values(array_filter(
-            $this->livros,
-            function ($a) use ($id) {
-                return $a['id'] = $id;
-            }
-        ));
-        if (empty($a)){
-            print "<b>Nenhuma pessoa encontrada com o id: {$id}</b>";
-        }else{
-            $p = $p[0];
-        }
-        print "<h2>Livro</h2>";
-        print "<p>A livro com o id = {$id} é: </p>";
-        print "<label>{$p['titulo']}  {$p['autor']} </label>";
+        return view('livros.show', ['livro' => $livros [0]]);
+    }
+
+    function destroy($id)
+    {
+        DB::delete("DELETE FROM livros WHERE id = ?", [$id]);
+
+        return redirect('/livros');
     }
 }

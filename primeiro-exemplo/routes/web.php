@@ -42,11 +42,22 @@ Route::POST('/itens', function () {
 
 
 
+Route::get('/pessoas', [PessoaController::class, 'index']);
+Route::get('/pessoas/{id}/show', [PessoaController::class, 'show'])->where('id','[0-9]+');
 Route::get('/pessoas/create', [PessoaController::class, 'create']);
+Route::post('/pessoas/store', [PessoaController::class, 'store']);
+Route::get('/pessoas/{id}/edit', [PessoaController::class, 'edit']);
+Route::post('/pessoas/update', [PessoaController::class, 'update']);
+Route::get('/pessoas/{id}/destroy', [PessoaController::class, 'destroy']);
 
-route::post('/pessoas/store' , [PessoaController::class, 'store']);
+
 
 Route::get('/livros/create', [LivrosController::class, 'create']);
+Route::post('/livros/store' , [LivrosController::class, 'store']);
+Route::get('/livros/{id}/edit', [LivrosController::class, 'edit']);
+Route::post('/livros/update', [LivrosController::class, 'update']);
+Route::get('/livros/{id}/destroy', [LivrosController::class, 'destroy']);
+Route::get('/livros', [LivrosController::class, 'index']);
+Route::get('/livros/{id}/show', [LivrosController::class, 'show'])->where('id','[0-9]+');
 
-route::post('/livros/store' , [LivrosController::class, 'store']);
 

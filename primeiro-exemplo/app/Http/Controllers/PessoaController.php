@@ -1,70 +1,74 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PessoaController extends Controller
 {
+    function index(){
+        $pessoas = DB::select('select * from pessoas;');
 
-    // var $pessoas = [
-    //     ['id' => 1, 'nome' => 'Thyago', 'sobrenome' => 'Salvá'],
-    //     ['id' => 2, 'nome' => 'bernardo', 'sobrenome' => 'Marquetti']
-    // ];
-
-    function index()
-    {
-
-        $pessoas =DB::select('select * from pessoas;');
-
-        return view('pessoas.index' , [
-            'pessoas'=> $pessoas
+        return view('pessoas.index', [
+            'pessoas' => $pessoas
         ]);
-        // print "<ul>";
-        // foreach ($this->pessoas as $pessoa) {
-        //     print "<li> {$pessoa['nome']} {$pessoa['sobrenome']}</li>";
-        // }
-        // print "</ul>";
     }
 
     function create(){
-        return view('pessoas/create');
+        return view('pessoas.create');
     }
 
-    function store (Request $request){
+    function store(Request $request){
         $data = $request->all();
 
-        DB::table('pessoas')->insert([
-            'nome' =>$data['nome'],
-            'sobrenome' =>$data['sobrenome'],
-        ]);
+        unset($data['_token']);
+        DB::insert("
+        INSERT INTO pessoas(nome, sobrenome) VALUES (:nome, :sobrenome);",
+        $data);
 
         return redirect('/pessoas');
     }
 
-    function show($id)
-    {
-        $p = [];
-        // foreach ($this->pessoas as $pessoa) {
-        //     if ($pessoa['id' == $id]) {
-        //         $p = $pessoa['id'];
-        //         break;
-        //     }
-        // }
+    function edit($id){
+        $pessoas = DB::select("
+            SELECT * FROM pessoas WHERE id = ?",
+            [$id]
+        );
 
-        $p = array_values(array_filter(
-            $this->pessoas,
-            function ($a) use ($id) {
-                return $a['id'] == $id;
-            }));
-            if (empty($a)){
-                print "<b> Nenhuma pessoa encontrada com o id: {$id}</b>";
-            }else{
-                $p =$p[0];
-            }
+        return view('pessoas.edit', ['pessoa' => $pessoas[0]]);
+    }
 
-        print "<h2>Pessoa</h2>";
-        print "<p>A pessoa com o id = {$id} é: </p>";
-        print "<label>{$p['nome']}  {$p['sobrenome']} </label>";
+    function update(Request $request){
+        // Retorna vetor associativo
+        $data = $request->all();
+        // Remover o índice _token
+        unset($data['_token']);
+
+        DB::update("
+            UPDATE pessoas
+            SET
+                nome = :nome,
+                sobrenome = :sobrenome
+            WHERE
+                id = :id
+        ", $data);
+
+        return redirect('/pessoas');
+    }
+
+    function show($id){
+        $pessoas = DB::select("
+            SELECT * FROM pessoas WHERE id = :id",
+            ['id' => $id]
+        );
+
+        return view('pessoas.show', ['pessoa' => $pessoas[0]]);
+    }
+
+    function destroy($id){
+        DB::delete("DELETE FROM pessoas WHERE id = ?", [$id]);
+
+        return redirect('/pessoas');
     }
 }
