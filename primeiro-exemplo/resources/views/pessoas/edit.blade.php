@@ -1,7 +1,21 @@
-<form action='/pessoas/update' method='post'>
-    <input type='hidden' name='_token' value='{{ csrf_token() }}'/>
-    <input type='text' value="{{ $pessoa->nome }}" name='nome' placeholder="Entre com o nome"/>
-    <input type='text' value="{{ $pessoa->sobrenome }}" name='sobrenome' placeholder="Entre com o sobrenome"/>
-    <input type="hidden" value="{{ $pessoa->id }}" name="id"/>
-    <button type='submit'>Alterar</button>
-</form>
+@extends('base.index')
+
+@section('container')
+    <form action='/pessoas/upadate' method='post'>
+
+        <input type='hidden' name='_token' value='{{ csrf_token() }}' />
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type='text' name='nome' value="{{ $pessoa->nome }}" class="form-control" placeholder="entre com o nome" />
+        </div>
+        <div class="mb-3">
+            <label for="nome" class="form-label">Sobrenome</label>
+            <input type='text' name='sobrenome' value=" {{ $pessoa->sobrenome }}" class="form-control" placeholder="entre com o sobrenome" />
+        </div>
+        <div class="mb-3">
+            <input type="hidden" value="{{ $pessoa->id }}" name="id" />
+        </div>
+        <a class="btn btn-danger" href="/pessoas">Voltar</a>
+        <button type='submit'class="btn btn-primary">Alterar</button>
+    </form>
+@endsection
