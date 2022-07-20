@@ -9,7 +9,6 @@ class PessoaController extends Controller
 {
     function index()
     {
-        //$pessoas = DB::select('select * from pessoas;');
 
         $pessoas = DB::table('pessoas')
             ->SELECTraw("id , nome, sobrenome,  floor(datediff(now(), dtnasc)/?) as idade", [365])
@@ -31,9 +30,7 @@ class PessoaController extends Controller
         $data = $request->all();
 
         unset($data['_token']);
-        // DB::insert("
-        // INSERT INTO pessoas(nome, sobrenome, dtnasc) VALUES (:nome, :sobrenome , :dtnasc);",
-        // $data);
+     
         DB::table('pessoas')->insert($data);
 
         return redirect('/pessoas');
@@ -41,10 +38,7 @@ class PessoaController extends Controller
 
     function edit($id)
     {
-        // $pessoas = DB::select("
-        //     SELECT * FROM pessoas WHERE id = ?",
-        //     [$id]
-        // );
+
         $pessoa = DB::table('pessoas')->find($id);
 
         return view('pessoas.edit', ['pessoa' => $pessoa]);
@@ -57,41 +51,37 @@ class PessoaController extends Controller
         // Remover o índice _token
         unset($data['_token']);
 
-        DB::update("
-            UPDATE pessoas
-            SET
-                nome = :nome,
-                sobrenome = :sobrenome
-                dtnasc = :dtnasc
-            WHERE
-                id = :id
-        ", $data);
+        $id = array_shift($data);
+
+        DB::table('pessoas')
+            ->where('id', $id)
+            ->update($data);
 
         return redirect('/pessoas');
     }
 
     function show($id)
     {
-        // $pessoas = DB::select("
-        //     SELECT * FROM pessoas WHERE id = :id",
-        //     ['id' => $id]
-        // );
+
         $pessoas = DB::table('pessoas')
             ->selectRaw("
         id,
         nome,
         sobrenome,
-        date_format(dtnasc, '%d/%m/%Y') as dateformatada,
+        date_format(dtnasc, '%d/%m/%Y') as dataformatada,
         floor(datediff(now(), dtnasc)/365) as idade
         ")
             ->find($id);
 
-        return view('pessoas.show', ['pessoas' => $pessoas]);
+        return view('pessoas.show', ['pessoa' => $pessoas]);
     }
 
     function destroy($id)
     {
-        DB::delete("DELETE FROM  pessoas  WHERE id = ?", [$id]);
+ 
+        DB::table('pessoas')
+        ->where('id', $id)
+        ->delete();
 
         return redirect('/pessoas');
     }

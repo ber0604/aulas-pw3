@@ -10,7 +10,10 @@ class LivrosController extends Controller
 {
     function index()
     {
-        $livros = DB::select('select * from livros;');
+        $livros = DB::table('livros')
+            ->selectRaw("id, titulo, autor")
+            ->orderBy('titulo')
+            ->get();
 
         return view('livros.index', [
             'livros' => $livros
@@ -27,24 +30,19 @@ class LivrosController extends Controller
         $data = $request->all();
 
         unset($data['_token']);
-        DB::insert(
-            "
-        INSERT INTO livros(titulo, autor) VALUES (:titulo, :autor);",
-            $data
-        );
+
+        DB::table('livros')
+            ->insert($data);
 
         return redirect('/livros');
     }
 
     function edit($id)
     {
-        $livros = DB::select(
-            "
-            SELECT * FROM livros WHERE id = ?",
-            [$id]
-        );
+        $livro = DB::table('livros')
+            ->find($id);
 
-        return view('livros.edit', ['livro' => $livros[0]]);
+        return view('livros.edit', ['livro' => $livro]);
     }
 
     function update(Request $request)
@@ -54,32 +52,29 @@ class LivrosController extends Controller
         // Remover o índice _token
         unset($data['_token']);
 
-        DB::update("
-            UPDATE livros
-            SET
-                titulo = :titulo,
-               autor = :autor
-            WHERE
-                id = :id
-        ", $data);
+        $id = array_shift($data);
+
+        DB::table('livros')
+            ->where('id', $id)
+            ->update($data);
 
         return redirect('/livros');
     }
 
     function show($id)
     {
-        $livros = DB::select(
-            "
-            SELECT * FROM livros WHERE id = :id",
-            ['id' => $id]
-        );
+        $livros = DB::table('livros' )
+        ->selectRaw("id, titulo, autor")
+        ->find($id);
 
-        return view('livros.show', ['livro' => $livros [0]]);
+        return view('livros.show', ['livro' => $livros]);
     }
 
     function destroy($id)
     {
-        DB::delete("DELETE FROM livros WHERE id = ?", [$id]);
+        DB::table('livros' )
+        ->where('id' , $id)
+        ->delete();
 
         return redirect('/livros');
     }

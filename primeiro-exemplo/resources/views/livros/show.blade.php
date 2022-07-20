@@ -1,7 +1,7 @@
 <ul>
-    <li>ID: {{$livros->id}}</li>
-    <li>Título: {{$livros->titulo}}</li>
-    <li>Autor: {{$livros->autor}}</li>
+    <li>ID: {{$livro->id}}</li>
+    <li>Título: {{$livro->titulo}}</li>
+    <li>Autor: {{$livro->autor}}</li>
 </ul>
 <a href="/livros">Voltar</a>
 

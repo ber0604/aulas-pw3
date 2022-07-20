@@ -1,8 +1,12 @@
+@extends('base.index')
+
+@section('container')
 <form action='/livros/store' method='post'>
     <input type='hidden' name='_token' value='{{ csrf_token() }}'/>
-    <input type='text'  name='titulo' placeholder="Título"/>
-    <input type='text'  name='autor' placeholder="Autor"/>
-    <input type="hidden"  name="id"/>
-    <button type='submit'>Enviar</button>
-</form>
 
+    @include('components.field', ['type'=> 'text', 'name' => 'titulo', 'label' => 'Titulo', 'value' => ""])
+    @include('components.field', ['type'=> 'text', 'name' => 'autor', 'label' => 'Autor', 'value' => ""])
+    <a class="btn btn-danger" href="/livros">Voltar</a>
+    @include('components.button', ['color'=> 'primary', 'label' => 'Inserir', 'type' => 'submit'])
+  </form>
+@endsection
